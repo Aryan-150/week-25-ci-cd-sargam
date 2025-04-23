@@ -1,18 +1,30 @@
-name: deploying the nextjs application to the vm
+name: Deploy Next.js Application to VM
 
 on:
-    push:
-        branches: [ main ]
+  push:
+    branches:
+      - main
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - name: login to a vm
-              run: | 
-                mkdir ~/.ssh
-                touch ~/.ssh known_hosts
-                echo "${{ secrets.KNOWN_HOSTS }}" &> ~/.ssh/known_hosts
-                echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
-                chmod 700 ~/ssh_key
-                ssh -i ~/ssh_key ubuntu@${{ vars.VM_IP4_ADDRESS }} -t "cd ~/week-25-ci-cd-sargam && git pull origin main && export PATH=/home/ubuntu/.nvm/versions/node/v23.11.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin && npm install && pm2 restart fe-server"
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Deploy and Restart App on VM
+        env:
+          VM_IP: ${{ vars.VM_IP4_ADDRESS }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$VM_IP << 'EOF'
+            cd ~/week-25-ci-cd-sargam
+            git pull origin main
+            export PATH=$HOME/.nvm/versions/node/v23.11.0/bin:$PATH
+            npm install
+            pm2 restart fe-server || pm2 start npm --name fe-server -- start
+          EOF
