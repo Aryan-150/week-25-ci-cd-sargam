@@ -52,6 +52,7 @@ export default function Home() {
         </div>
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           Deployment of Nextjs application into a VM
+          Making another commit to check if evrything is working file or not?
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
