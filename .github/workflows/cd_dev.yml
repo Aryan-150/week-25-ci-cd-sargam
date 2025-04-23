@@ -1,0 +1,16 @@
+name: deploying the nextjs application to the vm
+
+on:
+    push:
+        branches: [ main ]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: deploy the complete nextjs to a vm
+              run: | 
+                echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
+                chmod 700 ~/ssh_key
+                ssh -i ~/ssh_key ubuntu@${{ vars.VM_IP4_ADDRESS }}
+                echo "successfully logged into the vm"
