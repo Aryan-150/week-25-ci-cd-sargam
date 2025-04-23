@@ -16,7 +16,9 @@ jobs:
                 echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
                 chmod 700 ~/ssh_key
                 ssh -i ~/ssh_key ubuntu@${{ vars.VM_IP4_ADDRESS }}
-                echo "successfully logged into the vm"
+
             - name: pull changes & run the start script
               run: |
-                ls
+                cd ~/week-25-ci-cd-sargam
+                git pull origin main
+                npm install
