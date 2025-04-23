@@ -50,6 +50,9 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+        <div className="flex gap-4 items-center flex-col sm:flex-row">
+          Deployment of Nextjs application into a VM
+        </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a

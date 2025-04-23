@@ -20,4 +20,5 @@ jobs:
                     git pull origin main
                     export PATH=$HOME/.nvm/versions/node/v23.11.0/bin:$PATH
                     npm install
+                    npm run build
                     pm2 restart fe-server || pm2 start npm --name "fe-server" -- start
