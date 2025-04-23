@@ -19,6 +19,4 @@ jobs:
 
             - name: pull changes & run the start script
               run: |
-                cd ~/week-25-ci-cd-sargam
-                git pull origin main
-                npm install
+                -t "cd ~/week-25-ci-cd-sargam && git pull origin main && npm install"
