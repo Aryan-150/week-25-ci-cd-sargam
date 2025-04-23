@@ -15,8 +15,4 @@ jobs:
                 echo "${{ secrets.KNOWN_HOSTS }}" &> ~/.ssh/known_hosts
                 echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
                 chmod 700 ~/ssh_key
-                ssh -i ~/ssh_key ubuntu@${{ vars.VM_IP4_ADDRESS }}
-
-            - name: pull changes & run the start script
-              run: |
-                -t "cd ~/week-25-ci-cd-sargam && git pull origin main && npm install"
+                ssh -i ~/ssh_key ubuntu@${{ vars.VM_IP4_ADDRESS }} -t "cd ~/week-25-ci-cd-sargam && git pull origin main && npm install"
